@@ -81,3 +81,48 @@ count = custom_zero_rows.sum()
 print(f"두 컬럼 모두 0인 행의 개수: {count}")
 print('전체 행의 개수 ',df_t.shape[0])
 # %%
+# 1. 두 컬럼이 모두 0인 행을 찾음
+condition = (df_t['신고수'] == 0) & (df_t['신축수'] == 0)
+
+# 2. 물결표(~)를 붙여서 '조건에 해당하지 않는' 행들만 골라 새로운 변수에 저장
+df_filtered = df_t[~condition].copy()
+
+# 확인
+print(f"원본 행 개수: {len(df_t)}")
+print(f"삭제 후 행 개수: {len(df_filtered)}")
+
+print(df_filtered)
+# %%
+import matplotlib.pyplot as plt
+
+# 한글 대신 영어 컬럼명으로 잠시 변경해서 그리기
+
+df_plot = df_filtered[['신고수', '신축수']].iloc[0]
+df_plot.index = ['Report_Count', 'New_Construction'] # 한글 -> 영어
+df_plot.plot(kind='bar')
+plt.show()
+# %%
+# 2. 시각화 설정
+# width=0.8 혹은 0.9 정도로 설정하면 막대가 두꺼워지며 서로 가까워집니다.
+ax = df_plot.plot(kind='bar', 
+                  color=['#3498db', '#e67e22'], # 각각 다른 색상
+                  width=.8,                     # 막대 두께 (간격 조절)
+                  figsize=(6, 5)) #표사이즈 비율로 확인
+
+# 3. y축 세부 설정 (0부터 5까지, 1단위)
+plt.ylim(0, 5) 
+# plt.yticks(np.arange(0, 6, 1)) 
+plt.yticks([0, 2, 5, 10])
+
+# 4. 기타 스타일 정리
+plt.title(f"{df_filtered['년월'].iloc[0]} report", fontsize=14, pad=15)
+plt.xticks(rotation=0) # x축 글자 똑바로
+plt.grid(axis='y', linestyle='--', alpha=0.3) # 보조선 추가
+
+# 막대 위에 숫자 표시
+for i, v in enumerate(df_plot):
+    ax.text(i, v + 0.1, str(int(v)), ha='center', fontweight='bold')
+
+plt.show()
+
+# %%

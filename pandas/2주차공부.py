@@ -38,6 +38,13 @@ print(df_t.head())
 # %%
 # df_t.columns = df_t.iloc[0]
 print(df_t.columns)
+print(df_t[2:3])
+
+# df_t[0:3]: 0, 1, 2번 행 (총 3개)
+
+# df_t[2:3]: 2번 행 딱 하나 (3번은 포함 안 됨)
+
+# df_t[5:10]: 5, 6, 7, 8, 9번 행 (총 5개)
 
 # %%
 df_t = df_t[1:]
